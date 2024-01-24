@@ -1,6 +1,6 @@
-import express, { Express } from "express";
 import bodyParser from "body-parser";
-import { getStoredPosts } from "./data/post";
+import express, { Express } from "express";
+import { Post, getStoredPosts, storePosts } from "./data/post";
 
 const app: Express = express();
 
@@ -30,7 +30,16 @@ app.get('/posts/:id', async (req, res) => {
 
 app.post('/posts', async (req, res) => {
     const storedPosts = await getStoredPosts();
-    const newPost = req.body;
+    const newPost = {
+        id: Math.random().toString(36).slice(2, 9),
+        body: req.body.body,
+        author: req.body.author
+    } as Post;
     storedPosts.push(newPost);
-    res.json({post: newPost});
+    await storePosts(storedPosts);
+    res.status(201).json({message: 'Stored new post', post: newPost});
+});
+
+app.listen(8000, () => {
+    console.log('Listening on port 8000');
 });

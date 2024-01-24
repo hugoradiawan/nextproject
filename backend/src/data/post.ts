@@ -7,6 +7,12 @@ export async function getStoredPosts(): Promise<Post[]> {
     return storedPosts;
 }
 
-export function storePosts(posts) {
+export function storePosts(posts: Post[]) {
     return writeFile('src/data/posts.json', JSON.stringify({ posts: posts || [] }));
+}
+
+export interface Post {
+    id?: string;
+    body: string;
+    author: string;
 }
