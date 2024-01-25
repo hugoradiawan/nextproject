@@ -1,15 +1,18 @@
 import classes from "./Modal.module.css";
+import { useNavigate } from "react-router-dom";
 
 export function Modal({
   children,
-  onClose,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-  onClose: () => void;
-}) {
+}>): JSX.Element {
+  const navigate = useNavigate();
+  function closeHandler(): void {
+    navigate('/'); // .. and this one
+  }
   return (
     <>
-      <div className={classes.backdrop} onClick={onClose} />
+      <div className={classes.backdrop} onClick={closeHandler} />
       <dialog open={true} className={classes.modal}>
         {children}
       </dialog>
